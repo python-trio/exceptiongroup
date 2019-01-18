@@ -26,9 +26,9 @@ def split(exc_type, exc, *, match=None):
         rests = []
         rest_notes = []
         for subexc, note in zip(exc.exceptions, exc.sources):
-            match, rest = split(exc_type, subexc, match=match)
-            if match is not None:
-                matches.append(match)
+            matched, rest = split(exc_type, subexc, match=match)
+            if matched is not None:
+                matches.append(matched)
                 match_notes.append(note)
             if rest is not None:
                 rests.append(rest)
