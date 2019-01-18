@@ -42,9 +42,9 @@ class ExceptionGroup(BaseException):
                 )
             )
 
-    # it's strange that copy.copy doesn't work for ExceptionGroup object
-    # because it's inheritant from BaseException, but can't figure out why.
-    # For now, add __copy__ method to make ExceptionGroup can be copied.
+    # copy.copy doesn't work for ExceptionGroup, because BaseException have
+    # rewrite __reduce_ex__ method.  So we need to add __copy__ method to
+    # make it can be copied.
     def __copy__(self):
         return self.__class__(self.message, self.exceptions, self.sources)
 

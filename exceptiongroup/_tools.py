@@ -141,7 +141,7 @@ class Catcher:
             exceptiongroup_catch_exc.__context__ = saved_context
 
 
-def catch(cls, exc_type, handler, match=None):
+def catch(exc_type, handler, match=None):
     """Return a context manager that catches and re-throws exception.
         after running :meth:`match` on them.
 
