@@ -143,7 +143,7 @@ class Catcher:
 
 def catch(exc_type, handler, match=None):
     """Return a context manager that catches and re-throws exception.
-        after running :meth:`match` on them.
+        after running :meth:`handle` on them.
 
     Args:
         exc_type: An exception type or A tuple of exception type that need
