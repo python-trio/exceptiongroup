@@ -1,4 +1,8 @@
-from exceptiongroup import ExceptionGroup, split, catch
+from exceptiongroup import ExceptionGroup, split
+
+
+def raise_error(err):
+    raise err
 
 
 def test_split_for_none_exception():
@@ -73,3 +77,27 @@ def test_split_with_single_exception():
     matched, unmatched = split(ValueError, err)
     assert matched is None
     assert unmatched is err
+
+
+def test_split_with_same_traceback():
+    try:
+        raise_error(RuntimeError("RuntimeError"))
+    except Exception as e:
+        run_error = e
+
+    try:
+        raise_error(ValueError("ValueError"))
+    except Exception as e:
+        val_error = e
+
+    group = ExceptionGroup(
+        "ErrorGroup", [run_error, val_error], ["RuntimeError", "ValueError"]
+    )
+    try:
+        raise_error(group)
+    except BaseException as e:
+        new_group = e
+
+    matched, unmatched = split(RuntimeError, group)
+    assert matched.__traceback__ is new_group.__traceback__
+    assert unmatched.__traceback__ is new_group.__traceback__

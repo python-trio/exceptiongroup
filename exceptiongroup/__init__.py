@@ -46,7 +46,10 @@ class ExceptionGroup(BaseException):
     # rewrite __reduce_ex__ method.  So we need to add __copy__ method to
     # make it can be copied.
     def __copy__(self):
-        return self.__class__(self.message, self.exceptions, self.sources)
+        new_group = self.__class__(self.message, self.exceptions, self.sources)
+        new_group.__traceback__ = self.__traceback__
+        new_group.__context__ = self.__context__
+        return new_group
 
 
 from . import _monkeypatch
