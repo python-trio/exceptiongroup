@@ -43,12 +43,13 @@ class ExceptionGroup(BaseException):
             )
 
     # copy.copy doesn't work for ExceptionGroup, because BaseException have
-    # rewrite __reduce_ex__ method.  So we need to add __copy__ method to
+    # rewrite __reduce_ex__ method.  We need to add __copy__ method to
     # make it can be copied.
     def __copy__(self):
         new_group = self.__class__(self.message, self.exceptions, self.sources)
         new_group.__traceback__ = self.__traceback__
         new_group.__context__ = self.__context__
+        new_group.__cause__ = self.__cause__
         return new_group
 
 

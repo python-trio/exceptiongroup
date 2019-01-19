@@ -5,6 +5,15 @@ def raise_error(err):
     raise err
 
 
+def raise_error_from_another(out_err, another_err):
+    # use try..except approache so out_error have meaningful
+    # __context__, __cause__ attribute.
+    try:
+        raise another_err
+    except Exception as e:
+        raise out_err from e
+
+
 def test_split_for_none_exception():
     matched, unmatched = split(RuntimeError, None)
     assert matched is None
@@ -79,7 +88,7 @@ def test_split_with_single_exception():
     assert unmatched is err
 
 
-def test_split_with_same_traceback():
+def test_split_and_check_attributes_same():
     try:
         raise_error(RuntimeError("RuntimeError"))
     except Exception as e:
@@ -93,11 +102,16 @@ def test_split_with_same_traceback():
     group = ExceptionGroup(
         "ErrorGroup", [run_error, val_error], ["RuntimeError", "ValueError"]
     )
+    # go and check __traceback__, __cause__ attributes
     try:
-        raise_error(group)
+        raise_error_from_another(group, RuntimeError("Cause"))
     except BaseException as e:
         new_group = e
 
     matched, unmatched = split(RuntimeError, group)
     assert matched.__traceback__ is new_group.__traceback__
+    assert matched.__cause__ is new_group.__cause__
+    assert matched.__context__ is new_group.__context__
     assert unmatched.__traceback__ is new_group.__traceback__
+    assert unmatched.__cause__ is new_group.__cause__
+    assert unmatched.__context__ is new_group.__context__
