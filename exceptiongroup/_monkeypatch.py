@@ -74,9 +74,7 @@ def traceback_exception_format(self, *, chain=True):
 
     for exc, source in zip(self.exceptions, self.sources):
         yield "\n  {}:\n\n".format(source)
-        yield from (
-            textwrap.indent(line, " " * 4) for line in exc.format(chain=chain)
-        )
+        yield from (textwrap.indent(line, " " * 4) for line in exc.format(chain=chain))
 
 
 def exceptiongroup_excepthook(etype, value, tb):

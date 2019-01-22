@@ -30,9 +30,7 @@ class ExceptionGroup(BaseException):
         self.exceptions = list(exceptions)
         for exc in self.exceptions:
             if not isinstance(exc, BaseException):
-                raise TypeError(
-                    "Expected an exception object, not {!r}".format(exc)
-                )
+                raise TypeError("Expected an exception object, not {!r}".format(exc))
         self.message = message
         self.sources = list(sources)
         if len(self.sources) != len(self.exceptions):
