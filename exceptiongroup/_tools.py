@@ -2,9 +2,22 @@
 # Core primitives for working with ExceptionGroups
 ################################################################
 
+import copy
 from . import ExceptionGroup
 
+
 def split(exc_type, exc, *, match=None):
+    """ splits the exception into one half (matched) representing all the parts of
+    the exception that match the predicate, and another half (not matched)
+    representing all the parts that don't match.
+
+    Args:
+        exc_type (type of exception): The exception type we use to split.
+        exc (BaseException): Exception object we want to split.
+        match (None or func): predicate function to restict the split process,
+            if the argument is not None, only exceptions with match(exception)
+            will go into matched part.
+    """
     if exc is None:
         return None, None
     elif isinstance(exc, ExceptionGroup):
@@ -13,9 +26,9 @@ def split(exc_type, exc, *, match=None):
         rests = []
         rest_notes = []
         for subexc, note in zip(exc.exceptions, exc.sources):
-            match, rest = ExceptionGroup.split(exc_type, subexc, match=match)
-            if match is not None:
-                matches.append(match)
+            matched, rest = split(exc_type, subexc, match=match)
+            if matched is not None:
+                matches.append(matched)
                 match_notes.append(note)
             if rest is not None:
                 rests.append(rest)
@@ -128,5 +141,18 @@ class Catcher:
             exceptiongroup_catch_exc.__context__ = saved_context
 
 
-def catch(cls, exc_type, handler, match=None):
+def catch(exc_type, handler, match=None):
+    """Return a context manager that catches and re-throws exception.
+        after running :meth:`handle` on them.
+
+    Args:
+        exc_type: An exception type or A tuple of exception type that need
+            to be handled by ``handler``.  Exceptions which doesn't belong to
+            exc_type or doesn't match the predicate will not be handled by
+            ``handler``.
+        handler: the handler to handle exception which match exc_type and
+            predicate.
+        match: when the match is not None, ``handler`` will only handle when
+            match(exc) is True
+    """
     return Catcher(exc_type, handler, match)

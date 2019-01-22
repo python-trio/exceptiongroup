@@ -33,6 +33,7 @@ class ExceptionGroup(BaseException):
                 raise TypeError(
                     "Expected an exception object, not {!r}".format(exc)
                 )
+        self.message = message
         self.sources = list(sources)
         if len(self.sources) != len(self.exceptions):
             raise ValueError(
@@ -40,6 +41,16 @@ class ExceptionGroup(BaseException):
                     len(self.sources), len(self.exceptions)
                 )
             )
+
+    # copy.copy doesn't work for ExceptionGroup, because BaseException have
+    # rewrite __reduce_ex__ method.  We need to add __copy__ method to
+    # make it can be copied.
+    def __copy__(self):
+        new_group = self.__class__(self.message, self.exceptions, self.sources)
+        new_group.__traceback__ = self.__traceback__
+        new_group.__context__ = self.__context__
+        new_group.__cause__ = self.__cause__
+        return new_group
 
 
 from . import _monkeypatch
