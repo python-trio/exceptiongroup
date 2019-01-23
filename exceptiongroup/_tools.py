@@ -3,10 +3,16 @@
 ################################################################
 
 import copy
+from typing import Tuple, Callable, Type, Optional
 from . import ExceptionGroup
 
 
-def split(exc_type, exc, *, match=None):
+def split(
+    exc_type: Type[BaseException],
+    exc: BaseException,
+    *,
+    match: Optional[Callable[[BaseException], bool]] = None
+) -> Tuple[Optional[BaseException], Optional[BaseException]]:
     """ splits the exception into one half (matched) representing all the parts of
     the exception that match the predicate, and another half (not matched)
     representing all the parts that don't match.
@@ -17,10 +23,11 @@ def split(exc_type, exc, *, match=None):
         match (None or func): predicate function to restict the split process,
             if the argument is not None, only exceptions with match(exception)
             will go into matched part.
+
+    Note that if the `exc` is type of ExceptionGroup, then the return
+    value will be tuple of (ExceptionGroup or None, ExceptionGroup or None)
     """
-    if exc is None:
-        return None, None
-    elif isinstance(exc, ExceptionGroup):
+    if isinstance(exc, ExceptionGroup):
         matches = []
         match_notes = []
         rests = []
@@ -38,13 +45,13 @@ def split(exc_type, exc, *, match=None):
         elif rests and not matches:
             return None, exc
         else:
-            match = copy.copy(exc)
-            match.exceptions = matches
-            match.sources = match_notes
-            rest = copy.copy(exc)
-            rest.exceptions = rests
-            rest.sources = rest_notes
-            return match, rest
+            matched_group = copy.copy(exc)
+            matched_group.exceptions = matches
+            matched_group.sources = match_notes
+            rest_group = copy.copy(exc)
+            rest_group.exceptions = rests
+            rest_group.sources = rest_notes
+            return matched_group, rest_group
     else:
         if isinstance(exc, exc_type) and (match is None or match(exc)):
             return exc, None
