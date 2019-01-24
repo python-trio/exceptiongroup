@@ -65,7 +65,9 @@ def test_split_with_predicate():
 
     error1 = RuntimeError("skip")
     error2 = RuntimeError("Runtime Error")
-    group = ExceptionGroup("Many Errors", [error1, error2], ["skip", "Runtime Error"])
+    group = ExceptionGroup(
+        "Many Errors", [error1, error2], ["skip", "Runtime Error"]
+    )
     matched, unmatched = split(RuntimeError, group, match=_match)
     assert matched.exceptions == [error2]
     assert unmatched.exceptions == [error1]
