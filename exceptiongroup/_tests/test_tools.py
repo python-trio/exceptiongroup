@@ -1,3 +1,4 @@
+import pytest
 from exceptiongroup import ExceptionGroup, split
 
 
@@ -14,10 +15,9 @@ def raise_error_from_another(out_err, another_err):
         raise out_err from e
 
 
-def test_split_for_none_exception():
-    matched, unmatched = split(RuntimeError, None)
-    assert matched is None
-    assert unmatched is None
+def test_split_for_none_exception_should_raise_value_error():
+    with pytest.raises(ValueError):
+        matched, unmatched = split(RuntimeError, None)
 
 
 def test_split_when_all_exception_matched():

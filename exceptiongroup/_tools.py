@@ -3,16 +3,10 @@
 ################################################################
 
 import copy
-from typing import Tuple, Callable, Type, Optional
 from . import ExceptionGroup
 
 
-def split(
-    exc_type: Type[BaseException],
-    exc: BaseException,
-    *,
-    match: Optional[Callable[[BaseException], bool]] = None
-) -> Tuple[Optional[BaseException], Optional[BaseException]]:
+def split(exc_type, exc, *, match=None):
     """ splits the exception into one half (matched) representing all the parts of
     the exception that match the predicate, and another half (not matched)
     representing all the parts that don't match.
@@ -27,6 +21,8 @@ def split(
     Note that if the `exc` is type of ExceptionGroup, then the return
     value will be tuple of (ExceptionGroup or None, ExceptionGroup or None)
     """
+    if not isinstance(exc, BaseException):
+        raise ValueError("Argument `exc` should be an instance of BaseException.")
     if isinstance(exc, ExceptionGroup):
         matches = []
         match_notes = []
