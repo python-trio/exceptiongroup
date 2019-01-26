@@ -22,7 +22,7 @@ def split(exc_type, exc, *, match=None):
     value will be tuple of (ExceptionGroup or None, ExceptionGroup or None)
     """
     if not isinstance(exc, BaseException):
-        raise ValueError(
+        raise TypeError(
             "Argument `exc` should be an instance of BaseException."
         )
     if isinstance(exc, ExceptionGroup):

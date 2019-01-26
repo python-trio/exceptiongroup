@@ -16,7 +16,7 @@ def raise_error_from_another(out_err, another_err):
 
 
 def test_split_for_none_exception_should_raise_value_error():
-    with pytest.raises(ValueError):
+    with pytest.raises(TypeError):
         matched, unmatched = split(RuntimeError, None)
 
 
