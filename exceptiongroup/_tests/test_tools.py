@@ -48,7 +48,7 @@ def test_split_when_contains_matched_and_unmatched():
     group = ExceptionGroup(
         "Many Errors",
         [error1, error2],
-        ["Runtime Error1", "Value Error2"]
+        ['Runtime Error1', 'Value Error2']
     )
     matched, unmatched = split(RuntimeError, group)
     assert isinstance(matched, ExceptionGroup)
@@ -70,7 +70,7 @@ def test_split_with_predicate():
     group = ExceptionGroup(
         "Many Errors",
         [error1, error2],
-        ["skip", "Runtime Error"]
+        ['skip', 'Runtime Error']
     )
     matched, unmatched = split(RuntimeError, group, match=_match)
     assert matched.exceptions == [error2]
