@@ -46,27 +46,31 @@ def test_split_when_contains_matched_and_unmatched():
     error1 = RuntimeError("Runtime Error1")
     error2 = ValueError("Value Error2")
     group = ExceptionGroup(
-        "Many Errors", [error1, error2], ["Runtime Error1", "Value Error2"]
+        "Many Errors",
+        [error1, error2],
+        ["Runtime Error1", "Value Error2"]
     )
     matched, unmatched = split(RuntimeError, group)
     assert isinstance(matched, ExceptionGroup)
     assert isinstance(unmatched, ExceptionGroup)
     assert matched.exceptions == [error1]
     assert matched.message == "Many Errors"
-    assert matched.sources == ["Runtime Error1"]
+    assert matched.sources == ['Runtime Error1']
     assert unmatched.exceptions == [error2]
     assert unmatched.message == "Many Errors"
-    assert unmatched.sources == ["Value Error2"]
+    assert unmatched.sources == ['Value Error2']
 
 
 def test_split_with_predicate():
     def _match(err):
-        return str(err) != "skip"
+        return str(err) != 'skip'
 
     error1 = RuntimeError("skip")
     error2 = RuntimeError("Runtime Error")
     group = ExceptionGroup(
-        "Many Errors", [error1, error2], ["skip", "Runtime Error"]
+        "Many Errors",
+        [error1, error2],
+        ["skip", "Runtime Error"]
     )
     matched, unmatched = split(RuntimeError, group, match=_match)
     assert matched.exceptions == [error2]
