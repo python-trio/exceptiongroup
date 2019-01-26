@@ -24,7 +24,7 @@ def test_split_when_all_exception_matched():
     group = ExceptionGroup(
         "Many Errors",
         [RuntimeError("Runtime Error1"), RuntimeError("Runtime Error2")],
-        ["Runtime Error1", "Runtime Error2"],
+        ["Runtime Error1", "Runtime Error2"]
     )
     matched, unmatched = split(RuntimeError, group)
     assert matched is group
@@ -35,7 +35,7 @@ def test_split_when_all_exception_unmatched():
     group = ExceptionGroup(
         "Many Errors",
         [RuntimeError("Runtime Error1"), RuntimeError("Runtime Error2")],
-        ["Runtime Error1", "Runtime Error2"],
+        ["Runtime Error1", "Runtime Error2"]
     )
     matched, unmatched = split(ValueError, group)
     assert matched is None
