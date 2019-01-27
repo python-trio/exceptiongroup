@@ -25,7 +25,15 @@ class ExceptionGroup(BaseException):
 
     """
 
-    def __init__(self, message, exceptions, sources):
+    def __init__(self, *args):
+        EXPECT_ARG_LENGTH = 3
+        if len(args) < EXPECT_ARG_LENGTH:
+            raise ValueError(
+                "The length of args should be equal to {}".format(
+                    EXPECT_ARG_LENGTH
+                )
+            )
+        message, exceptions, sources = args[0], args[1], args[2]
         super().__init__(message)
         self.exceptions = list(exceptions)
         for exc in self.exceptions:
@@ -51,6 +59,12 @@ class ExceptionGroup(BaseException):
         new_group.__context__ = self.__context__
         new_group.__cause__ = self.__cause__
         return new_group
+
+    def __str__(self):
+        return ", ".join(repr(exc) for exc in self.exceptions)
+
+    def __repr__(self):
+        return "<ExceptionGroup: {}>".format(self)
 
 
 from . import _monkeypatch
