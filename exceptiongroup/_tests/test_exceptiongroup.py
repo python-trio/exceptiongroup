@@ -14,6 +14,15 @@ def test_exception_group_init():
     assert group.sources == [str(memberA), str(memberB)]
 
 
+def test_exception_group_when_members_are_not_exceptions():
+    with pytest.raises(TypeError):
+        ExceptionGroup(
+            "error",
+            [RuntimeError("RuntimeError"), "error2"],
+            ["RuntimeError", "error2"],
+        )
+
+
 def test_exception_group_init_when_length_of_args_is_less_than_3():
     with pytest.raises(ValueError):
         ExceptionGroup("error")
