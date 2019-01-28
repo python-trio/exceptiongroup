@@ -25,16 +25,8 @@ class ExceptionGroup(BaseException):
 
     """
 
-    def __init__(self, *args):
-        EXPECT_ARG_LENGTH = 3
-        if len(args) < EXPECT_ARG_LENGTH:
-            raise ValueError(
-                "The length of args should be equal to {}".format(
-                    EXPECT_ARG_LENGTH
-                )
-            )
-        message, exceptions, sources = args[0], args[1], args[2]
-        super().__init__(message)
+    def __init__(self, message, exceptions, sources):
+        super().__init__(message, exceptions, sources)
         self.exceptions = list(exceptions)
         for exc in self.exceptions:
             if not isinstance(exc, BaseException):

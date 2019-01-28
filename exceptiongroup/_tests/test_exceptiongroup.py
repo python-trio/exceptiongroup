@@ -23,11 +23,6 @@ def test_exception_group_when_members_are_not_exceptions():
         )
 
 
-def test_exception_group_init_when_length_of_args_is_less_than_3():
-    with pytest.raises(ValueError):
-        ExceptionGroup("error")
-
-
 def test_exception_group_init_when_exceptions_messages_not_equal():
     with pytest.raises(ValueError):
         ExceptionGroup(
