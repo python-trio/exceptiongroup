@@ -1,6 +1,14 @@
+import copy
 import pytest
 
 from exceptiongroup import ExceptionGroup
+
+
+def raise_group():
+    try:
+        1 / 0
+    except Exception as e:
+        raise ExceptionGroup("ManyError", [e], [str(e)]) from e
 
 
 def test_exception_group_init():
@@ -47,3 +55,19 @@ def test_exception_group_str():
     assert "ExceptionGroup: " in repr(group)
     assert "memberA" in repr(group)
     assert "memberB" in repr(group)
+
+
+def test_exception_group_copy():
+    try:
+        raise_group()
+    except BaseException as e:
+        group = e
+    group.__suppress_context__ = False
+    another_group = copy.copy(group)
+    assert group.message == another_group.message
+    assert group.exceptions == another_group.exceptions
+    assert group.sources == another_group.sources
+    assert group.__traceback__ is another_group.__traceback__
+    assert group.__context__ is another_group.__context__
+    assert group.__cause__ is another_group.__cause__
+    assert group.__suppress_context__ == another_group.__suppress_context__
