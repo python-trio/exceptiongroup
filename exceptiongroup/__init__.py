@@ -50,6 +50,10 @@ class ExceptionGroup(BaseException):
         new_group.__traceback__ = self.__traceback__
         new_group.__context__ = self.__context__
         new_group.__cause__ = self.__cause__
+        # Setting __cause__ also implicitly sets the __suppress_context__
+        # attribute to True.  So we should copy __suppress_context__ attribute
+        # last, after copying __cause__.
+        new_group.__suppress_context__ = self.__suppress_context__
         return new_group
 
     def __str__(self):
