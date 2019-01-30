@@ -59,15 +59,26 @@ def test_exception_group_str():
 
 def test_exception_group_copy():
     try:
-        raise_group()
-    except BaseException as e:
+        raise_group()  # the exception is raise by `raise...from..`
+    except ExceptionGroup as e:
         group = e
+
+    another_group = copy.copy(group)
+    assert another_group.message == group.message
+    assert another_group.exceptions == group.exceptions
+    assert another_group.sources == group.sources
+    assert another_group.__traceback__ is group.__traceback__
+    assert another_group.__cause__ is group.__cause__
+    assert another_group.__context__ is group.__context__
+    assert another_group.__suppress_context__ is group.__suppress_context__
+    assert another_group.__cause__ is not None
+    assert another_group.__context__ is not None
+    assert another_group.__suppress_context__ is True
+
+    # doing copy when __suppress_context__ is False
     group.__suppress_context__ = False
     another_group = copy.copy(group)
-    assert group.message == another_group.message
-    assert group.exceptions == another_group.exceptions
-    assert group.sources == another_group.sources
-    assert group.__traceback__ is another_group.__traceback__
-    assert group.__context__ is another_group.__context__
-    assert group.__cause__ is another_group.__cause__
-    assert group.__suppress_context__ == another_group.__suppress_context__
+    assert another_group.__cause__ is group.__cause__
+    assert another_group.__context__ is group.__context__
+    assert another_group.__suppress_context__ is group.__suppress_context__
+    assert another_group.__suppress_context__ is False
