@@ -112,6 +112,8 @@ def test_split_and_check_attributes_same():
     assert matched.__traceback__ is new_group.__traceback__
     assert matched.__cause__ is new_group.__cause__
     assert matched.__context__ is new_group.__context__
+    assert matched.__suppress_context__ is new_group.__suppress_context__
     assert unmatched.__traceback__ is new_group.__traceback__
     assert unmatched.__cause__ is new_group.__cause__
     assert unmatched.__context__ is new_group.__context__
+    assert unmatched.__suppress_context__ is new_group.__suppress_context__
