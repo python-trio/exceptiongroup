@@ -18,6 +18,4 @@ def exc2_fn():
 
 
 # This should be printed nicely, because we overrode sys.excepthook
-raise exceptiongroup.ExceptionGroup(
-    "demo", [exc1_fn(), exc2_fn()], ["a", "b"],
-)
+raise exceptiongroup.ExceptionGroup("demo", [exc1_fn(), exc2_fn()], ["a", "b"])

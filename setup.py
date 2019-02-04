@@ -14,12 +14,8 @@ setup(
     author_email="njs@pobox.com",
     license="MIT -or- Apache License 2.0",
     packages=find_packages(),
-    install_requires=[
-        "trio",
-    ],
-    keywords=[
-        "async", "exceptions", "error handling",
-    ],
+    install_requires=["trio"],
+    keywords=["async", "exceptions", "error handling"],
     python_requires=">=3.5",
     classifiers=[
         "License :: OSI Approved :: MIT License",
