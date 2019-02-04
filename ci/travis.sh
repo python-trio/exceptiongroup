@@ -55,7 +55,7 @@ pip install -U pip setuptools wheel
 
 if [ "$CHECK_FORMATTING" = "1" ]; then
     pip install black
-    if black --check --diff -l 79 setup.py exceptiongroup; then
+    if ! black --check --diff setup.py exceptiongroup; then
         cat <<EOF
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

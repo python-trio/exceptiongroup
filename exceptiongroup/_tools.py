@@ -124,11 +124,9 @@ class Catcher:
                     exceptiongroup_catch_exc = handler_exc
                 else:
                     exceptiongroup_catch_exc = ExceptionGroup(
-                        "caught {}".format(
-                            self._exc_type.__class__.__name__
-                        ),
+                        "caught {}".format(self._exc_type.__class__.__name__),
                         [handler_exc, rest],
-                        ["exception raised by handler", "uncaught exceptions"]
+                        ["exception raised by handler", "uncaught exceptions"],
                     )
             else:
                 exceptiongroup_catch_exc = rest
