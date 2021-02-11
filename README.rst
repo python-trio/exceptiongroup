@@ -12,4 +12,7 @@ it to be merged into Python 3.8, so it can be used in both Trio and
 asyncio. For more information, see:
 https://github.com/python-trio/trio/issues/611
 
+For a more recent effort, see:
+https://github.com/python/exceptiongroups
+
 License: Your choice of MIT or Apache License 2.0
